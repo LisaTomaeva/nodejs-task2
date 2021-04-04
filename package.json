@@ -1,0 +1,25 @@
+{
+  "name": "nodejs-task2",
+  "version": "1.0.0",
+  "description": "NodeJS lessons, task 2",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run build && nodemon ./dist/index.js",
+    "build": "babel ./src -d dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/cli": "^7.13.10",
+    "@babel/core": "^7.13.10",
+    "@babel/preset-env": "^7.13.10",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7",
+    "path": "^0.12.7",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@babel/preset-es2015": "^7.0.0-beta.53"
+  }
+}
