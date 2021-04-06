@@ -9,14 +9,13 @@ const allUsers = [...Users];
 export function getAutoSuggestUsers(length, str) {
     let filteredUsers;
     if (str) {
-        filteredUsers = allUsers.filter(user => {
-            return user.login.includes(str)
-        })
+        filteredUsers = allUsers.filter(user =>
+            user.login.includes(str)
+        )
     } else {
         filteredUsers = allUsers
     }
-
-    const resUsers = length ? allUsers.slice(0, length+1) : filteredUsers;
+    const resUsers = length ? filteredUsers.slice(0, length) : filteredUsers;
 
     return resUsers.filter((u) => u.isDeleted === false);
 }

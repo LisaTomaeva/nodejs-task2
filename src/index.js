@@ -1,5 +1,5 @@
 var express = require('express');
-import { getUserById, getUserList, createUser, deleteUser, changeUser,  } from "./data/methods";
+import { getUserById, getAutoSuggestUsers, createUser, deleteUser, changeUser,  } from "./data/methods";
 
 var app = express();
 
