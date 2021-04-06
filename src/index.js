@@ -6,8 +6,9 @@ var app = express();
 app.listen('3000')
 
 app.use(express.json());
+
 app.get('/users', function(req, res) {
-  res.send(getUserList());
+  res.send(getAutoSuggestUsers(req.query.length, req.query.loginSubstring));
   });
 
 app.get('/users/:id', function(req, res) {

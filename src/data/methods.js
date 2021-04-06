@@ -6,8 +6,19 @@ import { v4 as uuidv4 } from 'uuid';
 const allUsers = [...Users];
 
 
-export function getUserList() {
-    return allUsers.filter((u) => u.isDeleted === false);
+export function getAutoSuggestUsers(length, str) {
+    let filteredUsers;
+    if (str) {
+        filteredUsers = allUsers.filter(user => {
+            return user.login.includes(str)
+        })
+    } else {
+        filteredUsers = allUsers
+    }
+
+    const resUsers = length ? allUsers.slice(0, length+1) : filteredUsers;
+
+    return resUsers.filter((u) => u.isDeleted === false);
 }
 
 export function getUserById(id) {
