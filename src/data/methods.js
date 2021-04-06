@@ -7,24 +7,26 @@ const allUsers = [...Users];
 
 
 export function getUserList() {
-    return allUsers
+    return allUsers.filter((u) => u.isDeleted === false);
 }
 
 export function getUserById(id) {
     const user = allUsers.find((u) => id === u.id)
-    console.log(user, id)
     return user
 }
 
 export function createUser(userData) {
-    const newId = uuidv4()
+    const newId = uuidv4();
     userData.id = newId;
+    userData.isDeleted = false;
     allUsers.push({...userData})
 }
 
 export function changeUser(id, userData) {
-    const user = allUsers.find((u) => id === u.id);
-    user = {...userData}
+    let user = getUserById(id);
+    user.login = userData.login;
+    user.password = userData.password;
+    user.age = userData.age;
 } 
 
 export function deleteUser(id) {

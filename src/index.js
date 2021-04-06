@@ -1,6 +1,6 @@
 var express = require('express');
-import { getUserById, getUserList, createUser, deleteUser,  } from "./data/methods";
-// var methods = require("./methods.js");
+import { getUserById, getUserList, createUser, deleteUser, changeUser,  } from "./data/methods";
+
 var app = express();
 
 app.listen('3000')
@@ -8,27 +8,27 @@ app.listen('3000')
 app.use(express.json());
 app.get('/users', function(req, res) {
   res.send(getUserList());
-    // res.send('get all active');
   });
 
 app.get('/users/:id', function(req, res) {
   res.send(getUserById(req.params.id))
-
-  // res.send('get user by id');
   });
 
-app.post('/users/:id', function(req, res) {
-    res.send('create');
+app.post('/users', function(req, res) {
+  createUser(req.body)
+  res.send({
+    status: "SUCCESS"
   });
+});
 
 app.put('/users/:id', function(req, res) {
-    res.send('change');
+  changeUser(req.params.id, req.body)
+  res.send({
+    status: "SUCCESS"
+  });
   });
 
 app.delete('/users/:id', function(req, res) {
-    res.send('delete');
+  deleteUser(req.params.id)
+  res.send({status: "SUCCESS"});
   });
-
-const test = {id: 2}
-const test2 = {...test}
-console.log(test2)
