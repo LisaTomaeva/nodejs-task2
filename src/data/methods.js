@@ -1,8 +1,6 @@
 import { Users } from './users';
 import { v4 as uuidv4 } from 'uuid';
-// var users = require("./users")
 
-// const users = []
 const allUsers = [...Users];
 
 
