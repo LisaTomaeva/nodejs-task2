@@ -3,13 +3,13 @@
  \c users; 
  CREATE TABLE users (
     id varchar(255) PRIMARY KEY,   
-    loginStr varchar(255),
+    username varchar(255),
     age int, 
-    passwordStr varchar(255),
-    isDeleted boolean
+    pswd varchar(255),
+    isdeleted boolean
 );
 
-INSERT INTO users (id, loginStr, age, passwordStr, isDeleted) VALUES
+INSERT INTO users (id, username, age, pswd, isdeleted) VALUES
     ('1', 'Ann', 46, '123', false),
     ('2', 'Jack', 39, '123', false),
     ('3', 'John', 22, '123', false),
