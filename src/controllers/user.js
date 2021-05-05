@@ -5,14 +5,6 @@ const Users = db.users;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
-    // Validate request
-    // if (!req.body.title) {
-    //   res.status(400).send({
-    //     message: "Content can not be empty!"
-    //   });
-    //   return;
-    // }
-  
     const user = {
       id: uuidv4(),
       username: req.body.login,
@@ -21,7 +13,6 @@ exports.create = (req, res) => {
       isdeleted: false
     };
   
-    console.log(req)
     Users.create(user)
       .then(data => {
         res.send(data);
@@ -33,13 +24,28 @@ exports.create = (req, res) => {
         });
       });
   };
-exports.findAllActive = (req, res) => {
-  // res.send({id: "123"})
-    // const title = req.query.title;
-    // var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
+
+exports.findAll = (req, res) => {
+    Users.findAll()
+      .then(data => {
+        res.send(data);
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Unknown error"
+        });
+      });
   
-    Users.findAll(
-      // { where: condition }
+};
+
+exports.findAllActive = (req, res) => {
+    var condition = req.query.loginSubstring ? { isdeleted: false, username: {[Op.like]: '%' + req.query.loginSubstring + '%' }} : { isdeleted: false };
+
+    Users.findAndCountAll(
+      { where: condition,
+        limit: req.query.length
+      },
       )
       .then(data => {
         res.send(data);
@@ -54,21 +60,75 @@ exports.findAllActive = (req, res) => {
 };
 
 exports.findOne = (req, res) => {
+  const id = req.params.id;
+
+  Users.findByPk(id)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error getting User with id=" + id
+      });
+    });
   
 };
 
 exports.update = (req, res) => {
-  
+  const id = req.params.id;
+
+  const updatedUser = {
+    username: req.body.login,
+    pswd: req.body.password,
+    age: req.body.age,
+  }
+
+  Users.update(updatedUser, {
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "User data was updated successfully!"
+        });
+      } else {
+        res.send({
+          message: `Cannot update User data with id=${id}!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating User with id=" + id
+      });
+    });
 };
 
 exports.delete = (req, res) => {
-  
-};
+  const id = req.params.id;
 
-exports.deleteAll = (req, res) => {
-  
-};
+  const updatedUser = {
+    isdeleted: true
+  }
 
-exports.findAllPublished = (req, res) => {
+  Users.update(updatedUser, {
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "User was deleted successfully!"
+        });
+      } else {
+        res.send({
+          message: `Cannot delete User with id=${id}!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error deleting User with id=" + id
+      });
+    });
   
 };

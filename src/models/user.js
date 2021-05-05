@@ -5,7 +5,8 @@ module.exports = (sequelize, Sequelize) => {
         primaryKey: true
         },
       username: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       pswd: {
         type: Sequelize.STRING

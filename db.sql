@@ -3,7 +3,7 @@
  \c users; 
  CREATE TABLE users (
     id varchar(255) PRIMARY KEY,   
-    username varchar(255),
+    username varchar(255) UNIQUE,
     age int, 
     pswd varchar(255),
     isdeleted boolean
