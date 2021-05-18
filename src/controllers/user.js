@@ -1,19 +1,7 @@
-const db = require("../models/main");
-import { v4 as uuidv4 } from 'uuid';
+import { getAllUsers, getActiveUsersByParams, getUserById, createUser, updateUser, deleteUser } from "../services/user";
 
-const Users = db.users;
-const Op = db.Sequelize.Op;
-
-exports.create = (req, res) => {
-    const user = {
-      id: uuidv4(),
-      username: req.body.login,
-      pswd: req.body.password,
-      age: req.body.age,
-      isdeleted: false
-    };
-  
-    Users.create(user)
+exports.create = (req, res) => {  
+    createUser(req.body)
       .then(data => {
         res.send(data);
       })
@@ -26,43 +14,35 @@ exports.create = (req, res) => {
   };
 
 exports.findAll = (req, res) => {
-    Users.findAll()
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Unknown error"
-        });
+  getAllUsers()
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Unknown error"
       });
-  
-};
+    });
+  };
 
 exports.findAllActive = (req, res) => {
-    var condition = req.query.loginSubstring ? { isdeleted: false, username: {[Op.like]: '%' + req.query.loginSubstring + '%' }} : { isdeleted: false };
-
-    Users.findAndCountAll(
-      { where: condition,
-        limit: req.query.length
-      },
-      )
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Unknown error"
-        });
+  getActiveUsersByParams(req.query.loginSubstring, req.query.length)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+        err.message || "Unknown error"
       });
-  
-};
+    });
+  };
 
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Users.findByPk(id)
+  getUserById(id)
     .then(data => {
       res.send(data);
     })
@@ -71,21 +51,12 @@ exports.findOne = (req, res) => {
         message: "Error getting User with id=" + id
       });
     });
-  
 };
 
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  const updatedUser = {
-    username: req.body.login,
-    pswd: req.body.password,
-    age: req.body.age,
-  }
-
-  Users.update(updatedUser, {
-    where: { id: id }
-  })
+  updateUser(id, req.body)
     .then(num => {
       if (num == 1) {
         res.send({
@@ -107,13 +78,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  const updatedUser = {
-    isdeleted: true
-  }
-
-  Users.update(updatedUser, {
-    where: { id: id }
-  })
+  deleteUser(id)
     .then(num => {
       if (num == 1) {
         res.send({
