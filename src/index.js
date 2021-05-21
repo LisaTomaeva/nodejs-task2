@@ -9,6 +9,7 @@ import db from "./models/main";
 db.sequelize.sync();
 
 require("./routes/user")(app);
+require("./routes/group")(app);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
