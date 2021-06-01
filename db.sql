@@ -15,6 +15,12 @@
     roles text[]
 );
 
+CREATE TABLE user_group (
+  id varchar(255) PRIMARY KEY, 
+  userId varchar(255) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
+  groupId varchar(255) REFERENCES groups (id) ON UPDATE CASCADE  ON DELETE CASCADE
+);
+
 INSERT INTO users (id, username, age, pswd, isdeleted) VALUES
     ('1', 'Ann', 46, '123', false),
     ('2', 'Jack', 39, '123', false),
@@ -26,7 +32,12 @@ INSERT INTO users (id, username, age, pswd, isdeleted) VALUES
 
 INSERT INTO groups (id, group_name, roles) VALUES
     ('1', 'ADMIN', '{"READ", "WRITE", "DELETE", "SHARE", "UPLOAD_FILES"}'),
-    ('2', 'Jack', '{"READ", "WRITE"}'),
-    ('3', 'John', '{"READ", "SHARE"}');
+    ('2', 'USER', '{"READ", "WRITE"}'),
+    ('3', 'GUEST', '{"READ", "SHARE"}');
+
+INSERT INTO user_group (id, userId, groupId) VALUES
+    ('1', '1', '1'),
+    ('2', '1', '2'),
+    ('3', '2', '1');
 
 
