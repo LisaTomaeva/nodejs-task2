@@ -1,16 +1,20 @@
 import express from "express";
 
+import UserRoute from "./routes/user";
+import GroupRoute from "./routes/group";
+import UserGroupRoute from "./routes/user-group";
+
+import db from "./models/main";
+
 const app = express();
 
 app.use(express.json());
 
-import db from "./models/main";
-
 db.sequelize.sync();
 
-require("./routes/user")(app);
-require("./routes/group")(app);
-require("./routes/user-group")(app);
+UserRoute(app);
+GroupRoute(app);
+UserGroupRoute(app)
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

@@ -1,4 +1,4 @@
-const Joi = require('joi')
+import Joi from 'joi';
  
 export const userBodySchema = Joi.object({
   login: Joi.string().pattern(new RegExp('[A-Za-z]')).required(),

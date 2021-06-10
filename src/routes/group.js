@@ -1,23 +1,27 @@
-const validator = require('express-joi-validation').createValidator({
+import Validator from 'express-joi-validation';
+import Express from "express";
+import GroupsController from "../controllers/group.js";
+import { groupBodySchema } from "../validation";
+
+const validator = Validator.createValidator({
     passError: true
   });
   
-  import { groupBodySchema } from "../validation";
+const GroupRoute = app => {
   
-  module.exports = app => {
-      const users = require("../controllers/group.js");
-    
-      var router = require("express").Router();
-    
-      router.post("/", validator.body(groupBodySchema), users.create);
-    
-      router.get("/", users.findAll);
-        
-      router.get("/:id", users.findOne);
-    
-      router.put("/:id", validator.body(groupBodySchema), users.update);
-    
-      router.delete("/:id", users.delete);
+    const router = Express.Router();
+  
+    router.post("/", validator.body(groupBodySchema), GroupsController.create);
+  
+    router.get("/", GroupsController.findAll);
       
-      app.use('/api/groups', router);
-    };
+    router.get("/:id", GroupsController.findOne);
+  
+    router.put("/:id", validator.body(groupBodySchema), GroupsController.update);
+  
+    router.delete("/:id", GroupsController.delete);
+    
+    app.use('/api/groups', router);
+  };
+
+export default GroupRoute;

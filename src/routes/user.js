@@ -1,25 +1,28 @@
-const validator = require('express-joi-validation').createValidator({
+import Validator from 'express-joi-validation';
+import Express from "express";
+import UsersController from "../controllers/user.js";
+import { bodySchema } from "../validation";
+
+const validator = Validator.createValidator({
   passError: true
 });
 
-import { bodySchema } from "../validation";
-
-module.exports = app => {
-    const users = require("../controllers/user.js");
+const UserRoute = app => {
+    const router = Express.Router();
   
-    var router = require("express").Router();
+    router.post("/", validator.body(bodySchema), UsersController.create);
   
-    router.post("/", validator.body(bodySchema), users.create);
+    router.get("/", UsersController.findAll);
   
-    router.get("/", users.findAll);
+    router.get("/active", UsersController.findAllActive);
   
-    router.get("/active", users.findAllActive);
+    router.get("/:id", UsersController.findOne);
   
-    router.get("/:id", users.findOne);
+    router.put("/:id", validator.body(bodySchema), UsersController.update);
   
-    router.put("/:id", validator.body(bodySchema), users.update);
-  
-    router.delete("/:id", users.delete);
+    router.delete("/:id", UsersController.delete);
     
     app.use('/api/users', router);
   };
+
+  export default UserRoute;

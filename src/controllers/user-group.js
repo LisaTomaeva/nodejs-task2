@@ -1,23 +1,22 @@
 import { addUsersToGroup } from "../services/user-group";
 
 exports.addUsersToGroup = (req, res) => {
-  const id = req.params.id;
-
-  addUsersToGroup(id, req.body)
+  addUsersToGroup(req.body)
     .then(num => {
+      console.log('RETURNING', NUM)
       if (num == 1) {
         res.send({
           message: "Data was updated successfully!"
         });
       } else {
         res.send({
-          message: `Cannot update data with id=${id}!`
+          message: `Cannot update data!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error updating Group with id=" + id
+        message: "Error while updating!"
       });
     });
 };
