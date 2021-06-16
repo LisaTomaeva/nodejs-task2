@@ -5,15 +5,15 @@ const UsersGroups = db.usersGroups;
 
 const addUsersToGroup = (body) => {
   let objectsToAdd = []
-  body.users.forEach((userId) => {
+  body.users.forEach((user_id) => {
     objectsToAdd.push({
       id: uuidv4(),
-      groupId: body.groupId,
-      userId
+      group_id: body.groupId,
+      user_id
     })
   })
   console.log(objectsToAdd)
-  return UsersGroups.bulkCreate(objectsToAdd, {returning: true})
+  return UsersGroups.bulkCreate(objectsToAdd)
 }
 
 

@@ -4,10 +4,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
         primaryKey: true
         },
-      groupId: {
+      group_id: {
         type: Sequelize.STRING
       },
-      userId: {
+      user_id: {
         type: Sequelize.STRING
       }
     }, {

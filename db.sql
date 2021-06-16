@@ -18,9 +18,10 @@ CREATE TYPE roleType AS ENUM ('READ', 'WRITE', 'DELETE', 'SHARE', 'UPLOAD_FILES'
 );
 
 CREATE TABLE user_group (
-  id varchar(255) PRIMARY KEY, 
-  userId varchar(255) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
-  groupId varchar(255) REFERENCES groups (id) ON UPDATE CASCADE  ON DELETE CASCADE
+  id varchar(255), 
+  user_id varchar(255) REFERENCES users (id) ON UPDATE CASCADE ON DELETE CASCADE,
+  group_id varchar(255) REFERENCES groups (id) ON UPDATE CASCADE ON DELETE CASCADE,
+  PRIMARY KEY (user_id, group_id)
 );
 
 INSERT INTO users (id, username, age, pswd, isdeleted) VALUES
@@ -37,7 +38,7 @@ INSERT INTO groups (id, group_name, roles) VALUES
     ('2', 'USER', '{"READ", "WRITE"}'),
     ('3', 'GUEST', '{"READ", "SHARE"}');
 
-INSERT INTO user_group (id, userId, groupId) VALUES
+INSERT INTO user_group (id, user_id, group_id) VALUES
     ('1', '1', '1'),
     ('2', '1', '2'),
     ('3', '2', '1');
