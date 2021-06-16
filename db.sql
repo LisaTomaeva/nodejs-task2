@@ -9,10 +9,12 @@
     isdeleted boolean
 );
 
+CREATE TYPE roleType AS ENUM ('READ', 'WRITE', 'DELETE', 'SHARE', 'UPLOAD_FILES');
+
  CREATE TABLE groups (
     id varchar(255) PRIMARY KEY,   
     group_name varchar(255) UNIQUE,
-    roles text[]
+    roles roleType[]
 );
 
 CREATE TABLE user_group (

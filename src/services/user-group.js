@@ -6,11 +6,6 @@ const UsersGroups = db.usersGroups;
 const addUsersToGroup = (body) => {
   let objectsToAdd = []
   body.users.forEach((userId) => {
-    // UsersGroups.create({
-    //   id: uuidv4(),
-    //   groupId: body.groupId,
-    //   userId
-    // })
     objectsToAdd.push({
       id: uuidv4(),
       groupId: body.groupId,

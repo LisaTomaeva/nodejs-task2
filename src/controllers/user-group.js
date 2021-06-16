@@ -3,7 +3,7 @@ import { addUsersToGroup } from "../services/user-group";
 exports.addUsersToGroup = (req, res) => {
   addUsersToGroup(req.body)
     .then(num => {
-      console.log('RETURNING', NUM)
+      console.log('RETURNING', num)
       if (num == 1) {
         res.send({
           message: "Data was updated successfully!"
@@ -16,7 +16,8 @@ exports.addUsersToGroup = (req, res) => {
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error while updating!"
+        message: "Error while updating!",
+        details: err
       });
     });
 };
