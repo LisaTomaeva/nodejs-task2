@@ -1,10 +1,12 @@
 import express from "express";
+import winston from "winston";
 
 import UserRoute from "./routes/user";
 import GroupRoute from "./routes/group";
 import UserGroupRoute from "./routes/user-group";
+import Login from "./routes/login";
 
-import { methodsLogger, errorsLogger } from "./config/logger";
+import { methodsLogger, errorsLogger } from "./middlewares/logger";
 
 import db from "./models/main";
 
@@ -18,6 +20,7 @@ db.sequelize.sync();
 UserRoute(app);
 GroupRoute(app);
 UserGroupRoute(app);
+Login(app);
 
 app.use(errorsLogger);
 
