@@ -1,4 +1,4 @@
-import { addUsersToGroup } from "../services/user-group";
+import { addUsersToGroup, getUsersAndGroups } from "../services/user-group";
 
 exports.addUsersToGroup = (req, res) => {
   addUsersToGroup(req.body)
@@ -13,4 +13,17 @@ exports.addUsersToGroup = (req, res) => {
         details: err
       });
     });
+};
+
+exports.getUsersAndGroupsTable = (req, res) => {
+  getUsersAndGroups()
+  .then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Unknown error"
+    });
+  });
 };

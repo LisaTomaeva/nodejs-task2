@@ -26,7 +26,7 @@ const updateGroup = (id, body) => {
     roles: body.roles
   }
 
-  return Users.update(updatedGroup, {
+  return Groups.update(updatedGroup, {
     where: { id: id }
   })
 }

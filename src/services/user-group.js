@@ -16,5 +16,8 @@ const addUsersToGroup = (body) => {
   return UsersGroups.bulkCreate(objectsToAdd)
 }
 
+const getUsersAndGroups = () => {
+  return UsersGroups.findAll();
+}
 
-export { addUsersToGroup }
+export { addUsersToGroup, getUsersAndGroups }

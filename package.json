@@ -16,13 +16,15 @@
     "@babel/preset-env": "^7.13.10",
     "express": "^4.17.1",
     "express-joi-validation": "^5.0.0",
+    "express-winston": "^4.1.0",
     "joi": "^17.4.0",
     "nodemon": "^2.0.7",
     "path": "^0.12.7",
     "pg": "^8.6.0",
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.6.2",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@babel/preset-es2015": "^7.0.0-beta.53"

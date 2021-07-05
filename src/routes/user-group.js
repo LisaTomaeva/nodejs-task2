@@ -6,6 +6,8 @@ const UserGroupRoute = app => {
 
     router.post("/", UserGroupController.addUsersToGroup);
 
+    router.get("/", UserGroupController.getUsersAndGroupsTable);
+
     app.use('/api/users-groups', router);
 }
 
