@@ -4,11 +4,14 @@ import UserRoute from "./routes/user";
 import GroupRoute from "./routes/group";
 import UserGroupRoute from "./routes/user-group";
 
+import winstonLogger from "./config/logger";
+
 import db from "./models/main";
 
 const app = express();
 
 app.use(express.json());
+app.use(winstonLogger);
 
 db.sequelize.sync();
 
