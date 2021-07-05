@@ -2,9 +2,9 @@
 import winston from 'winston';
 import expressWinston from'express-winston';
 
-export default expressWinston.logger({
+const methodsLogger = expressWinston.logger({
     transports: [
-      new winston.transports.Console()
+      new winston.transports.Console({ humanReadableUnhandledException: true, colorize: true })
     ],
     format: winston.format.combine(
       winston.format.colorize(),
@@ -15,4 +15,16 @@ export default expressWinston.logger({
     expressFormat: true, 
     colorize: false, 
     ignoreRoute: function (req, res) { return false; } 
-  })
+  });
+
+const errorsLogger = expressWinston.errorLogger({
+    transports: [
+      new winston.transports.Console()
+    ],
+    format: winston.format.combine(
+      winston.format.colorize(),
+      winston.format.json()
+    )
+  });
+
+  export { methodsLogger, errorsLogger };
