@@ -1,4 +1,3 @@
-import { tokenCheck } from "../middlewares/auth";
 import { login } from "../services/login";
 
 exports.login = (req, res) => {
