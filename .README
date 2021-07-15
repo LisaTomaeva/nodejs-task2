@@ -61,3 +61,6 @@ For UserGroup table:
         "5"
     ]
 })
+
+To run the test: 
+- "npm run test"
