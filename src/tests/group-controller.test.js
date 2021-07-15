@@ -8,8 +8,6 @@ jest.mock('../services/group');
 describe("Check methods ", () => {
 
     beforeEach(() => {
-        // Resets the overwritten return values via
-        // "callExternalService.mockReturnValue" in the test cases
         jest.resetAllMocks();
       });
 
@@ -48,7 +46,7 @@ describe("Check methods ", () => {
     expect(res.send).toHaveBeenCalledWith('RESOLVED');
   });
 
-  test('CREATE should 404 and return correct value', async () => {
+  test('CREATE should 500 and return correct value', async () => {
     expect.assertions(2);
 
     let req = mockRequest();
@@ -56,23 +54,16 @@ describe("Check methods ", () => {
     const res = mockResponse();
 
     createGroup.mockReturnValue(new Promise(function(resolve, reject) {
-        return reject("13123123")
+        return reject({message: "error"});
     }))
 
-    // Doesn't work with return
-    // done();
+    await controller.create(req, res)
 
-    try {
-      await controller.create(req, res)
-    } catch(e) {
-      expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.status).toHaveBeenCalledWith({ message: 'Not Found' });
-    }
+    //doesn't wait for promise rejection without timeout function
+    await new Promise((r) => setTimeout(r, 2000));
 
-    // await controller.create(req, res)
-
-
-    // expect(controller.create(req, res).rejects.toEqual(new Error('Test')))
+    expect(res.status).toHaveBeenCalledTimes(1)
+    expect(res.status).toHaveBeenCalledWith(500);
 
   });
 
@@ -86,17 +77,35 @@ describe("Check methods ", () => {
     const res = mockResponse();
 
     updateGroup.mockReturnValue(new Promise(function(resolve, reject) {
-        return resolve("RESOLVED");
+      return resolve(1);
     }));
     
     await controller.update(req, res);
 
     expect(res.send).toHaveBeenCalledTimes(1)
     expect(res.send.mock.calls.length).toBe(1);
-    expect(res.send).toHaveBeenCalledWith('RESOLVED');
+    expect(res.send).toHaveBeenCalledWith({"message": "Group was updated successfully!"});
   });
 
-  test('UPDATE should 404 and return correct value', async () => {
+  test('UPDATE failed with an error message "Cannot update Group data"', async () => {
+    expect.assertions(3);
+
+    let req = mockRequest();
+    req.params.id = 1;
+    const res = mockResponse();
+
+    updateGroup.mockReturnValue(new Promise(function(resolve, reject) {
+      return resolve();
+    }));
+    
+    await controller.update(req, res);
+
+    expect(res.send).toHaveBeenCalledTimes(1)
+    expect(res.send.mock.calls.length).toBe(1);
+    expect(res.send).toHaveBeenCalledWith({message: "Cannot update Group data with id=1!"});
+  });
+
+  test('UPDATE should 500 and return correct value', async () => {
     expect.assertions(2);
 
     let req = mockRequest();
@@ -104,14 +113,153 @@ describe("Check methods ", () => {
     const res = mockResponse();
 
     updateGroup.mockReturnValue(new Promise(function(resolve, reject) {
-        return reject("13123123")
+        return reject({message: "error"});
     }));
 
-    try {
-      return await controller.update(req, res)
-    } catch {
-      expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.status).toHaveBeenCalledWith({ message: 'Not Found' });
-    }
+    await controller.update(req, res);
+    
+    //doesn't wait for promise rejection without timeout function
+    await new Promise((r) => setTimeout(r, 2000));
+
+    expect(res.status).toHaveBeenCalledTimes(1)
+    expect(res.status).toHaveBeenCalledWith(500);
+  });
+
+  //FINDALL
+
+  test('FINDALL should 200 and return correct value', async () => {
+    expect.assertions(3);
+
+    let req = mockRequest();
+    req.params.id = null;
+    const res = mockResponse();
+
+    getGroups.mockReturnValue(new Promise(function(resolve, reject) {
+        return resolve('data');
+    }));
+
+    await controller.findAll(req, res);
+
+    expect(res.send).toHaveBeenCalledTimes(1)
+    expect(res.send.mock.calls.length).toBe(1);
+    expect(res.send).toHaveBeenCalledWith("data");
+  });
+
+  test('FINDALL should 500 and return correct value', async () => {
+    expect.assertions(2);
+
+    let req = mockRequest();
+    req.params.id = null;
+    const res = mockResponse();
+
+    getGroups.mockReturnValue(new Promise(function(resolve, reject) {
+        return reject({message: 'error'});
+    }));
+
+    await controller.findAll(req, res);
+
+    //doesn't wait for promise rejection without timeout function
+    await new Promise((r) => setTimeout(r, 2000));
+
+    expect(res.status).toHaveBeenCalledTimes(1)
+    expect(res.status).toHaveBeenCalledWith(500);
+  });
+
+  //FINEONE
+
+  test('FINDONE should 200 and return correct value', async () => {
+    expect.assertions(3);
+
+    let req = mockRequest();
+    req.params.id = null;
+    const res = mockResponse();
+
+    getGroupById.mockReturnValue(new Promise(function(resolve, reject) {
+        return resolve('data');
+    }));
+
+    await controller.findOne(req, res);
+
+    expect(res.send).toHaveBeenCalledTimes(1)
+    expect(res.send.mock.calls.length).toBe(1);
+    expect(res.send).toHaveBeenCalledWith("data");
+  });
+
+  test('FINDONE should 500 and return correct value', async () => {
+    expect.assertions(2);
+
+    let req = mockRequest();
+    req.params.id = null;
+    const res = mockResponse();
+
+    getGroupById.mockReturnValue(new Promise(function(resolve, reject) {
+        return reject({message: 'error'});
+    }));
+
+    await controller.findOne(req, res);
+
+    //doesn't wait for promise rejection without timeout function
+    await new Promise((r) => setTimeout(r, 2000));
+
+    expect(res.status).toHaveBeenCalledTimes(1)
+    expect(res.status).toHaveBeenCalledWith(500);
+  });
+
+  //DELETE
+
+  test('DELETE should 200 and return correct value', async () => {
+    expect.assertions(3);
+
+    let req = mockRequest();
+    req.params.id = 1;
+    const res = mockResponse();
+
+    deleteGroup.mockReturnValue(new Promise(function(resolve, reject) {
+      return resolve(1);
+    }));
+    
+    await controller.delete(req, res);
+
+    expect(res.send).toHaveBeenCalledTimes(1)
+    expect(res.send.mock.calls.length).toBe(1);
+    expect(res.send).toHaveBeenCalledWith({"message": "Group was deleted successfully!"});
+  });
+
+  test('DELETE failed with an error message "Cannot update Group data"', async () => {
+    expect.assertions(3);
+
+    let req = mockRequest();
+    req.params.id = 1;
+    const res = mockResponse();
+
+    deleteGroup.mockReturnValue(new Promise(function(resolve, reject) {
+      return resolve();
+    }));
+    
+    await controller.delete(req, res);
+
+    expect(res.send).toHaveBeenCalledTimes(1)
+    expect(res.send.mock.calls.length).toBe(1);
+    expect(res.send).toHaveBeenCalledWith({message: "Cannot delete Group with id=1.!"});
+  });
+
+  test('DELETE should 500 and return correct value', async () => {
+    expect.assertions(2);
+
+    let req = mockRequest();
+    req.params.id = null;
+    const res = mockResponse();
+
+    deleteGroup.mockReturnValue(new Promise(function(resolve, reject) {
+        return reject({message: "error"});
+    }));
+
+    await controller.delete(req, res);
+    
+    //doesn't wait for promise rejection without timeout function
+    await new Promise((r) => setTimeout(r, 2000));
+
+    expect(res.status).toHaveBeenCalledTimes(1)
+    expect(res.status).toHaveBeenCalledWith(500);
   });
 });
