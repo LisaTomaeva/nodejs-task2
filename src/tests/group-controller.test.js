@@ -240,7 +240,7 @@ describe("Check methods ", () => {
 
     expect(res.send).toHaveBeenCalledTimes(1)
     expect(res.send.mock.calls.length).toBe(1);
-    expect(res.send).toHaveBeenCalledWith({message: "Cannot delete Group with id=1.!"});
+    expect(res.send).toHaveBeenCalledWith({message: "Cannot delete Group with id=1!"});
   });
 
   test('DELETE should 500 and return correct value', async () => {

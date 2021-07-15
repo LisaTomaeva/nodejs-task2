@@ -73,7 +73,7 @@ exports.delete = (req, res) => {
       });
     } else {
       res.send({
-        message: `Cannot delete Group with id=${id}.!`
+        message: `Cannot delete Group with id=${id}!`
       });
     }
   })
