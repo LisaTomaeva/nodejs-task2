@@ -3,7 +3,7 @@ How to run the app & the PoistgreSQL database:
 - npm i 
 - move to the nodejs-task2 folder to run the task
 - run local database:
-    - run "psql -U postgres" ( password can be changed in config/db.config.js);
+    - run "psql -U postgres" (database login, password, port and host can be changed in .env file);
     - use "\i db.sql" to run the database script
 - npm start
 
